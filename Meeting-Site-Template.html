@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; frame-src 'none'; script-src 'none'; style-src data: 'unsafe-inline'; img-src data:; media-src data:; font-src data:; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'none';">
+  
+  
+  <title>Meeting Site Template</title>
+  <style>
+    :root {
+      --cf-orange: #f6821f;
+      --cf-orange-light: #fff8f0;
+      --cf-orange-bg: #fef6ee;
+      --cf-dark: #1a1a1a;
+      --cf-gray-50: #f9fafb;
+      --cf-gray-100: #f3f4f6;
+      --cf-gray-200: #e5e7eb;
+      --cf-gray-300: #d1d5db;
+      --cf-gray-400: #9ca3af;
+      --cf-gray-500: #6b7280;
+      --cf-gray-600: #4b5563;
+      --cf-gray-700: #374151;
+      --cf-gray-800: #1f2937;
+      --cf-blue: #2563eb;
+      --cf-blue-bg: #eff6ff;
+      --cf-teal: #0d9488;
+      --cf-teal-bg: #f0fdfa;
+      --sidebar-width: 240px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #fff;
+      color: var(--cf-gray-700);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    a { color: var(--cf-orange); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: #fff;
+      border-right: 1px solid var(--cf-gray-200);
+      padding: 24px 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .sidebar-header { padding: 0 20px 20px; }
+    .cf-logo { margin-bottom: 16px; }
+    .cf-logo svg { width: 110px; height: auto; display: block; }
+    
+    .sidebar-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--cf-gray-800);
+      line-height: 1.3;
+    }
+
+    .sidebar-subtitle {
+      font-size: 13px;
+      color: var(--cf-gray-500);
+      margin-top: 2px;
+    }
+
+    .sidebar-nav { padding: 12px 0; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 20px;
+      font-size: 14px;
+      color: var(--cf-gray-600);
+      cursor: pointer;
+      transition: all 0.12s;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { background: var(--cf-gray-50); color: var(--cf-gray-800); }
+    .nav-item.active {
+      background: var(--cf-orange-light);
+      color: var(--cf-gray-800);
+      font-weight: 600;
+      border-left-color: var(--cf-orange);
+    }
+
+    .nav-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.65; }
+    .nav-item.active .nav-icon { opacity: 1; }
+
+    .main {
+      margin-left: var(--sidebar-width);
+      padding: 40px 56px 80px;
+      max-width: 920px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    h1 { font-size: 30px; font-weight: 700; color: var(--cf-gray-800); margin-bottom: 6px; }
+    h2 { font-size: 22px; font-weight: 700; color: var(--cf-gray-800); margin: 28px 0 12px; }
+    h3 { font-size: 17px; font-weight: 600; color: var(--cf-gray-800); margin: 20px 0 8px; }
+    .page-subtitle { font-size: 15px; color: var(--cf-gray-500); margin-bottom: 24px; }
+    .section-rule { border: none; border-top: 1px solid var(--cf-gray-200); margin: 24px 0; }
+
+    .callout {
+      border-left: 3px solid var(--cf-orange);
+      background: var(--cf-gray-50);
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .callout p { margin: 6px 0; }
+    .callout strong { color: var(--cf-gray-800); }
+
+    .info-card {
+      background: var(--cf-gray-50);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 12px 0;
+    }
+
+    .info-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+      text-transform: uppercase; color: var(--cf-gray-500); margin-bottom: 6px;
+    }
+
+    .info-card p { font-size: 14px; margin: 4px 0; }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .contact-card {
+      background: var(--cf-gray-50); border-radius: 6px; padding: 20px;
+      border: 1px solid var(--cf-gray-200);
+    }
+    .contact-card .cn { font-weight: 700; font-size: 16px; color: var(--cf-gray-800); }
+    .contact-card .ce { font-size: 13px; color: var(--cf-gray-600); margin: 8px 0; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--cf-orange); color: #fff;
+      padding: 10px 20px; border-radius: 5px;
+      font-weight: 600; font-size: 14px; text-decoration: none;
+      transition: background 0.12s; border: none; cursor: pointer;
+    }
+    .btn:hover { background: #e5740e; text-decoration: none; }
+
+    .blist { list-style: disc; padding-left: 20px; margin: 12px 0; }
+    .blist li { padding: 6px 0; font-size: 14px; }
+
+    .footer {
+      margin-top: 48px; padding-top: 16px;
+      border-top: 1px solid var(--cf-gray-200);
+      text-align: center; font-size: 12px; color: var(--cf-gray-400);
+    }
+
+    @media (max-width: 900px) {
+      .sidebar { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--cf-gray-200); }
+      .sidebar-nav { display: flex; flex-wrap: wrap; padding: 6px 12px; }
+      .nav-item { padding: 6px 14px; border-left: none; border-bottom: 3px solid transparent; font-size: 13px; }
+      .nav-item.active { border-left-color: transparent; border-bottom-color: var(--cf-orange); }
+      .main { margin-left: 0; padding: 24px 16px 60px; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="cf-logo">
+      <svg viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg">
+        <path d="M65.5 22c-.6 0-1.2.1-1.7.1-.3-1-.6-1.9-1.1-2.7-1.9-3.4-5.5-5.7-9.6-5.7-3.6 0-6.8 1.7-8.8 4.3-1.6-3.1-4.9-5.2-8.6-5.2-5.4 0-9.7 4.3-9.7 9.7 0 .4 0 .9.1 1.3-.6-.1-1.3-.2-1.9-.2-6.8 0-12.3 5.5-12.3 12.3s5.5 12.3 12.3 12.3h41.3c6.8 0 12.3-5.5 12.3-12.3S72.3 22 65.5 22z" fill="#f6821f"></path>
+        <path d="M65.5 22c-.6 0-1.2.1-1.7.1-.3-1-.6-1.9-1.1-2.7l-.6.3c.4.8.7 1.7 1 2.5l.1.4.6-.1c.6-.1 1.1-.1 1.7-.1 6.4 0 11.7 5.2 11.7 11.7 0 6.4-5.2 11.7-11.7 11.7H24.2c-6.4 0-11.7-5.2-11.7-11.7 0-6.4 5.2-11.7 11.7-11.7.7 0 1.4.1 2 .2l.5.1 0-.5c-.1-.4-.1-.9-.1-1.3 0-5 4.1-9.1 9.1-9.1 3.7 0 6.9 2.2 8.3 5.5l.2.5.3-.4c1.9-2.7 5-4.3 8.3-4.3 3.8 0 7.3 2.2 9.1 5.5l.1.3z" fill="#faad3f"></path>
+        <text x="82" y="50" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" font-size="28" font-weight="800" fill="#1a1a1a" letter-spacing="-0.3">CLOUDFLARE</text>
+      </svg>
+    </div>
+    
+    <div class="sidebar-title">Q1 2027 All-Hands Meeting</div>
+    <div class="sidebar-subtitle">Jan 15–17, 2027 · San Francisco</div>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" data-page="home">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      Home
+    </a>
+    <a class="nav-item" data-page="agenda">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      Agenda
+    </a>
+    <a class="nav-item" data-page="logistics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"></path></svg>
+      Logistics
+    </a>
+    <a class="nav-item" data-page="resources">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+      Resources
+    </a>
+    <a class="nav-item" data-page="contact">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      Contact
+    </a>
+  </nav>
+</aside>
+
+<div class="main">
+  
+  <div class="page active" id="page-home">
+    <h1>Q1 2027 All-Hands Meeting</h1>
+    <p class="page-subtitle">Join us for our quarterly company gathering and strategic alignment.</p>
+
+    <div class="callout">
+      <p><strong>Dates:</strong> Friday, January 15 – Sunday, January 17, 2027</p>
+      <p><strong>Location:</strong> The Grand Hotel, San Francisco, CA</p>
+      <p><strong>Check-in:</strong> Friday 2:00 PM</p>
+    </div>
+
+    <hr class="section-rule">
+
+    <h2>What to Know</h2>
+    <ul class="blist">
+      <li><strong>Arrive Friday afternoon</strong> — Main meetings begin Saturday morning</li><li>Check the Agenda page for the detailed schedule</li><li>See Logistics for hotel, travel, and local info</li><li>Contact info is on the Contact page</li>
+    </ul>
+
+    <div class="callout" style="background: var(--cf-teal-bg); border-left-color: var(--cf-teal);">
+      <p>✅ All attendees confirmed! We're looking forward to seeing everyone.</p>
+    </div>
+
+    <hr class="section-rule">
+
+    <h2>Questions?</h2>
+    <p>See the <a href="#">Contact</a> page for organizer info.</p>
+
+    <div class="footer">Q1 2027 All-Hands Meeting · Jan 15–17, 2027 · San Francisco</div>
+  </div>
+
+  
+  <div class="page" id="page-agenda">
+    <h1>Agenda</h1>
+    <p class="page-subtitle">Meeting schedule and key sessions.</p>
+
+    <hr class="section-rule">
+
+    
+      <h2>Friday, January 15</h2>
+      <ul class="blist">
+        <li><strong>2:00 PM</strong> — Attendee check-in &amp; welcome reception</li><li><strong>6:00 PM</strong> — Welcome dinner (on-site)</li>
+      </ul>
+    
+      <h2>Saturday, January 16</h2>
+      <ul class="blist">
+        <li><strong>8:00 AM</strong> — Breakfast &amp; networking</li><li><strong>9:00 AM</strong> — Keynote: CEO State of Company</li><li><strong>10:30 AM</strong> — Breakout sessions (choose your track)</li><li><strong>12:00 PM</strong> — Lunch</li><li><strong>1:30 PM</strong> — More breakout sessions</li><li><strong>3:30 PM</strong> — Coffee break &amp; networking</li><li><strong>4:00 PM</strong> — Panel discussion: Future of [topic]</li><li><strong>6:00 PM</strong> — Team dinner</li>
+      </ul>
+    
+      <h2>Sunday, January 17</h2>
+      <ul class="blist">
+        <li><strong>8:00 AM</strong> — Breakfast &amp; optional wellness activities</li><li><strong>9:00 AM</strong> — Closing keynote &amp; announcements</li><li><strong>10:30 AM</strong> — Wrap-up &amp; departures</li>
+      </ul>
+    
+
+    <div style="margin-top: 24px;">
+      <a href="#" class="btn">📄 View Full Schedule</a>
+    </div>
+
+    <div class="footer">Q1 2027 All-Hands Meeting · Jan 15–17, 2027 · San Francisco</div>
+  </div>
+
+  
+  <div class="page" id="page-logistics">
+    <h1>Logistics</h1>
+    <p class="page-subtitle">Travel, hotel, and venue information.</p>
+
+    <hr class="section-rule">
+
+    <h2>Venue</h2>
+    <div class="info-card">
+      <div class="info-label">Main Venue</div>
+      <p style="font-size: 16px; font-weight: 700;">The Grand Hotel</p>
+      <p>123 Market Street, San Francisco, CA 94102</p>
+      <p style="margin-top: 8px; font-size: 13px;"><a href="https://www.google.com/maps/search/The+Grand+Hotel+San+Francisco">View on Google Maps →</a></p>
+    </div>
+
+    <h2>Hotel</h2>
+    <div class="info-card">
+      <div class="info-label">Accommodations</div>
+      <p style="font-size: 16px; font-weight: 700;">The Grand Hotel (same venue)</p>
+      <p>Rooms are reserved for all attendees. Payment is covered by the company.</p>
+      <p style="margin-top: 8px;"><strong>Check-in:</strong> Friday from 2:00 PM</p>
+      <p><strong>Check-out:</strong> Sunday by 11:00 AM</p>
+    </div>
+
+    <h2>Getting There</h2>
+    <div class="info-card">
+      <div class="info-label">From SFO Airport</div>
+      <p><strong>Uber/Lyft:</strong> ~20 minutes, $25–40</p>
+      <p style="margin-top: 8px;"><strong>BART + Taxi:</strong> ~40 minutes, ~$30</p>
+    </div>
+
+    <h2>Parking</h2>
+    <div class="info-card">
+      <p>Hotel parking is included. Valet available at the entrance.</p>
+    </div>
+
+    <div class="footer">Q1 2027 All-Hands Meeting · Jan 15–17, 2027 · San Francisco</div>
+  </div>
+
+  
+  <div class="page" id="page-resources">
+    <h1>Resources</h1>
+    <p class="page-subtitle">Documents and links for the meeting.</p>
+
+    <hr class="section-rule">
+
+    <h2>Pre-Meeting Materials</h2>
+    <ul class="blist">
+      <li><a href="#">Company State of the Business (PDF)</a></li><li><a href="#">Strategic Plan Summary</a></li><li><a href="#">Q1 Goals &amp; Objectives</a></li>
+    </ul>
+
+    <h2>During the Meeting</h2>
+    <ul class="blist">
+      <li><a href="#">Full Agenda &amp; Session Details</a></li><li><a href="#">Breakout Session Descriptions</a></li><li><a href="#">Speaker Bios</a></li>
+    </ul>
+
+    <h2>Additional Info</h2>
+    <ul class="blist">
+      <li><a href="#">Dietary Accommodations Form</a></li><li><a href="#">Accessibility Information</a></li><li><a href="#">Post-Meeting Survey</a></li>
+    </ul>
+
+    <div class="footer">Q1 2027 All-Hands Meeting · Jan 15–17, 2027 · San Francisco</div>
+  </div>
+
+  
+  <div class="page" id="page-contact">
+    <h1>Contact</h1>
+    <p class="page-subtitle">Questions? Reach out to our organizers.</p>
+
+    <hr class="section-rule">
+
+    <h2>Event Organizers</h2>
+    <div class="contact-grid">
+      
+        <div class="contact-card">
+          <div class="cn">Sarah Johnson</div>
+          <div style="font-size: 12px; color: var(--cf-orange); margin: 4px 0 8px;">Event Lead</div>
+          <div class="ce">✉️ <a href="mailto:sarah@company.com">sarah@company.com</a></div>
+          <div class="ce">📱 <a href="tel:+1 (415) 555-1234">+1 (415) 555-1234</a></div>
+        </div>
+      
+        <div class="contact-card">
+          <div class="cn">Mike Chen</div>
+          <div style="font-size: 12px; color: var(--cf-orange); margin: 4px 0 8px;">Logistics</div>
+          <div class="ce">✉️ <a href="mailto:mike@company.com">mike@company.com</a></div>
+          <div class="ce">📱 <a href="tel:+1 (415) 555-5678">+1 (415) 555-5678</a></div>
+        </div>
+      
+        <div class="contact-card">
+          <div class="cn">Lisa Park</div>
+          <div style="font-size: 12px; color: var(--cf-orange); margin: 4px 0 8px;">Program Content</div>
+          <div class="ce">✉️ <a href="mailto:lisa@company.com">lisa@company.com</a></div>
+          <div class="ce">📱 <a href="tel:+1 (415) 555-9999">+1 (415) 555-9999</a></div>
+        </div>
+      
+    </div>
+
+    <h2>Emergency Contact</h2>
+    <div class="info-card">
+      <p>For urgent issues during the event, text or call: <strong>+1 (415) 555-0000</strong></p>
+    </div>
+
+    <div class="footer">Q1 2027 All-Hands Meeting · Jan 15–17, 2027 · San Francisco</div>
+  </div>
+</div>
+  
+</body></html>
